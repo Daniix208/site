@@ -1,6 +1,6 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request, render_template
 
-from utils import get_planet_list_names, get_planet_info_by_name
+from utils import get_planet_list_names, get_planet_info_by_name, add_planet
 
 app = Flask(__name__)
 
@@ -94,6 +94,21 @@ def planet_info(planet_name):
         </html>
     """
 
+@app.route('/add', methods = ["GET", "POST"])
+def add():
+    if request.method == "GET":
+        return render_template("add.html")
+    elif request.method == "POST":
+        name = request.form.get("name")
+        distance_form_sun = request.form.get("distance_from_sun")
+        diameter = request.form.get("diameter")
+        mass = request.form.get("mass")
+        atmosphere_composition = request.form.get("atmosphere_composition")
+        unique_features = request.form.get("unique_features")
+        geological_activity = request.form.get("geological_activity")
+        satellites = request.form.get("satellites")
+        climate_and_weather = request.form.get("climate_and_weather")
+        add_planet([name, distance_form_sun, diameter, mass, atmosphere_composition, unique_features, geological_activity, satellites, climate_and_weather])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
